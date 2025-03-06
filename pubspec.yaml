@@ -43,6 +43,8 @@ dependencies:
   firebase_messaging: ^15.2.4
   flutter_local_notifications: ^18.0.1
   timeago: ^3.7.0
+  google_sign_in: ^6.2.2
+  hexcolor: ^3.0.1
 
 dev_dependencies:
   flutter_test:
