@@ -45,6 +45,8 @@ dependencies:
   timeago: ^3.7.0
   google_sign_in: ^6.2.2
   hexcolor: ^3.0.1
+  flutter_screenutil: ^5.9.3
+  sign_in_button: ^3.2.0
 
 dev_dependencies:
   flutter_test:
