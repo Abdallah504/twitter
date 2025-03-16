@@ -7,6 +7,7 @@ import 'package:twitter/view/screens/splash-screen.dart';
 
 import 'firebase_options.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,8 +32,8 @@ class MyApp extends StatelessWidget {
     builder: (context,_){
     return MaterialApp(
     title: 'Twitter',
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
+    debugShowCheckedModeBanner: false, navigatorKey: navigatorKey,
+      theme: ThemeData(
 
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
     ),

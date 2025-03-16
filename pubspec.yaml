@@ -47,6 +47,7 @@ dependencies:
   hexcolor: ^3.0.1
   flutter_screenutil: ^5.9.3
   sign_in_button: ^3.2.0
+  googleapis_auth: ^1.6.0
 
 dev_dependencies:
   flutter_test:
