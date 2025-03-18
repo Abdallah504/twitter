@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/controller/logic/auth-provider.dart';
+import 'package:twitter/controller/logic/posts-provider.dart';
 import 'package:twitter/view/screens/splash-screen.dart';
 
 import 'firebase_options.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context)=>AuthProvider())
+      ChangeNotifierProvider(create: (context)=>AuthProvider()..getUserData()),
+      ChangeNotifierProvider(create: (context)=>PostsProvider())
     ],
     child:  ScreenUtilInit(
         designSize: const Size(360, 690),
