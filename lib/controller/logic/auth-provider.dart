@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:twitter/view/screens/home-screen.dart';
+import 'package:twitter/view/screens/main-screen.dart';
 
 import '../../model/user-model.dart';
 
@@ -42,7 +43,7 @@ class AuthProvider extends ChangeNotifier {
         getUserData();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => MainScreen()),
         );
       }
       return user;
@@ -89,6 +90,44 @@ class AuthProvider extends ChangeNotifier {
         "following": [],
         "createdAt": DateTime.now().toIso8601String(),
       });
+    }
+  }
+  /// **Edit User Profile**
+  Future<void> editUserProfile({
+    String? name,
+    String? username,
+    String? bio,
+    String? location,
+    String? website,
+    String? profilePic,
+    String? bannerImage,
+  }) async {
+    try {
+      if (_auth.currentUser == null) return;
+
+      String uid = _auth.currentUser!.uid;
+      final userRef = _firestore.collection('users').doc(uid);
+
+      // Create a map of fields to update
+      Map<String, dynamic> updates = {};
+
+      if (name != null) updates['name'] = name;
+      if (username != null) updates['username'] = username;
+      if (bio != null) updates['bio'] = bio;
+      if (location != null) updates['location'] = location;
+      if (website != null) updates['website'] = website;
+      if (profilePic != null) updates['profilePic'] = profilePic;
+      if (bannerImage != null) updates['bannerImage'] = bannerImage;
+
+      // Update the user document in Firestore
+      await userRef.update(updates);
+
+      // Fetch the updated user data
+      await getUserData();
+
+      notifyListeners();
+    } catch (e) {
+      print("Error updating user profile: $e");
     }
   }
 

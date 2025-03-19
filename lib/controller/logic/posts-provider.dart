@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/comment-model.dart';
 import '../../model/posts-model.dart';
 
 class PostsProvider extends ChangeNotifier{
@@ -53,5 +54,34 @@ class PostsProvider extends ChangeNotifier{
     } catch (e) {
       print("Error deleting post: $e");
     }
+  }
+
+  Future<void> addComment(String postId, CommentModel comment) async {
+    try {
+      final postRef = _firestore.collection('posts').doc(postId);
+      await postRef.update({
+        'comments': FieldValue.arrayUnion([comment.toMap()]), // Add comment to the list
+      });
+      notifyListeners();
+    } catch (e) {
+      print("Error adding comment: $e");
+    }
+  }
+
+  /// Fetch Comments for a Post
+  Stream<List<CommentModel>> getComments(String postId) {
+    return _firestore
+        .collection('posts')
+        .doc(postId)
+        .snapshots()
+        .map((snapshot) {
+      final data = snapshot.data();
+      if (data != null && data['comments'] != null) {
+        return (data['comments'] as List<dynamic>)
+            .map((comment) => CommentModel.fromMap(comment))
+            .toList();
+      }
+      return [];
+    });
   }
 }
