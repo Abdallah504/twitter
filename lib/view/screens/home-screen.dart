@@ -122,8 +122,10 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () => _showCommentDialog(context, auth, provider, post.id),
                 child: Text("Add Comment", style: TextStyle(color: Colors.blue)),
               ),
-              auth.userModel!.uid==post.userId?
-              IconButton(onPressed: (){}, icon: Icon(Icons.delete),color: Colors.red,):
+              auth.userModel?.uid==post.userId?
+              IconButton(onPressed: (){
+                provider.deletePost(post.id);
+              }, icon: Icon(Icons.delete),color: Colors.red,):
               SizedBox()
             ],
           )

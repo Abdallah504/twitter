@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:twitter/controller/logic/auth-provider.dart';
 import 'package:twitter/controller/logic/posts-provider.dart';
 import 'package:twitter/view/screens/splash-screen.dart';
@@ -14,6 +15,8 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Supabase.initialize(url: 'https://euclgidlzogbcibgzrtg.supabase.co',
+      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV1Y2xnaWRsem9nYmNpYmd6cnRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI3MjY4MTcsImV4cCI6MjA1ODMwMjgxN30.vo87lKsgE8ZAm2qTjIs5-sIA1XVsOxWRSMJ65uynmek');
   runApp(const MyApp());
 }
 
