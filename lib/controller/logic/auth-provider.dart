@@ -13,6 +13,7 @@ class AuthProvider extends ChangeNotifier {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
   User? _person;
   UserModel? _userModel; // Store user data
 
