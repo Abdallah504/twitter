@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/logic/auth-provider.dart';
@@ -20,7 +21,10 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: Colors.black,
           title: Image.asset('assets/twitter.png'),
           centerTitle: true,
-          leading: _buildProfileAvatar(auth),
+          leading: Padding(
+            padding: EdgeInsets.all(8.0).r,
+            child: _buildProfileAvatar(auth),
+          ),
         ),
         body: Center(
           child: Text('Chat',style: TextStyle(color: Colors.white),),

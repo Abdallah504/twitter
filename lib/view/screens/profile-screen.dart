@@ -265,6 +265,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     SizedBox(height: 8.h),
+                    Row(
+                      children: [
+                        Text(
+                          "${auth.userModel?.followers.length} Followers",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        SizedBox(width: 16.w),
+                        Text(
+                          "${auth.userModel?.following.length} Following",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
                     // Location and Website
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

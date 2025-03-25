@@ -7,6 +7,7 @@ import 'package:twitter/controller/logic/auth-provider.dart';
 import 'package:twitter/controller/logic/posts-provider.dart';
 import 'package:twitter/view/screens/splash-screen.dart';
 
+import 'controller/logic/news-provider.dart';
 import 'firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context)=>AuthProvider()..getUserData()),
-      ChangeNotifierProvider(create: (context)=>PostsProvider())
+      ChangeNotifierProvider(create: (context)=>PostsProvider()),
+      ChangeNotifierProvider(create: (context)=>NewsProvider()..gettingNews())
     ],
     child:  ScreenUtilInit(
         designSize: const Size(360, 690),
