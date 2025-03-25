@@ -3,6 +3,7 @@ import 'package:twitter/view/screens/profile-screen.dart';
 import 'package:twitter/view/screens/search.screen.dart';
 
 import 'chat-screen.dart';
+import 'following-screen.dart';
 import 'home-screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,8 +18,7 @@ class _MainScreenState extends State<MainScreen> {
     List<Widget> _widgetOptions = <Widget> [
     HomeScreen(),
     SearchScreen(),
-    ChatScreen(),
-
+    FollowingScreen(),
     ProfileScreen()
 
 

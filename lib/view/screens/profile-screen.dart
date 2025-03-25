@@ -426,6 +426,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onPressed: () => _showCommentDialog(context, auth, provider, post.id),
                 child: Text("Add Comment", style: TextStyle(color: Colors.blue)),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.favorite_border,size: 9.sp,color: Colors.grey,),
+                  SizedBox(width: 2.w,),
+                  Text(post.likes.length.toString(),style: TextStyle(color:Colors.grey,fontSize: 10.sp),)
+                ],
+              ),
               auth.userModel!.uid == post.userId
                   ? IconButton(onPressed: () {}, icon: Icon(Icons.delete), color: Colors.red)
                   : SizedBox()
