@@ -325,7 +325,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     stream: provider.getPosts(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        return Center(child: CircularProgressIndicator(
+                          color: Colors.blue,
+                        ));
                       } else if (snapshot.hasError) {
                         return Center(child: Text("Error loading posts", style: TextStyle(color: Colors.white)));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -458,7 +460,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               stream: provider.getComments(postId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ));
                 } else if (snapshot.hasError) {
                   return Text("Error loading comments", style: TextStyle(color: Colors.white));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

@@ -24,6 +24,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
   }
 
   void _scrollListener() {
@@ -47,6 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final message = {
       'senderId': currentUser.uid,
       'recipientId': widget.recipientUser.uid,
+      'participants': [currentUser.uid, widget.recipientUser.uid],
       'content': _messageController.text.trim(),
       'timestamp': FieldValue.serverTimestamp(),
       'read': false,
@@ -71,8 +75,6 @@ class _ChatScreenState extends State<ChatScreen> {
           .set(chatData, SetOptions(merge: true));
 
       _messageController.clear();
-
-      // Scroll to bottom after sending message
       _scrollToBottom();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -85,7 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_isListViewAttached && _scrollController.hasClients) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollController.animateTo(
-          0,
+          _scrollController.position.minScrollExtent,
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
         );
@@ -134,14 +136,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 : StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('messages')
-                  .where('senderId', whereIn: [currentUserId, widget.recipientUser.uid])
-                  .where('recipientId', whereIn: [currentUserId, widget.recipientUser.uid])
+                  .where('participants', arrayContains: currentUserId)
                   .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: Colors.blue,
+                    ),
                   );
                 }
 
@@ -151,13 +154,28 @@ class _ChatScreenState extends State<ChatScreen> {
                   );
                 }
 
+                // Filter messages to only include those between current user and recipient
+                final filteredMessages = snapshot.data!.docs.where((doc) {
+                  final message = doc.data() as Map<String, dynamic>;
+                  return (message['senderId'] == currentUserId &&
+                      message['recipientId'] == widget.recipientUser.uid) ||
+                      (message['senderId'] == widget.recipientUser.uid &&
+                          message['recipientId'] == currentUserId);
+                }).toList();
+
+                if (filteredMessages.isEmpty) {
+                  return const Center(
+                    child: Text('No messages yet', style: TextStyle(color: Colors.white70)),
+                  );
+                }
+
                 return ListView.builder(
                   controller: _scrollController,
                   reverse: true,
-                  itemCount: snapshot.data!.docs.length,
+                  itemCount: filteredMessages.length,
                   itemBuilder: (context, index) {
                     final message = MessageModel.fromMap(
-                      snapshot.data!.docs[index].data() as Map<String, dynamic>,
+                      filteredMessages[index].data() as Map<String, dynamic>,
                     );
                     final isMe = message.senderId == currentUserId;
 

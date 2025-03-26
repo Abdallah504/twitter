@@ -34,7 +34,9 @@ class FollowingScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(
+              color: Colors.blue,
+            ));
           }
 
           if (!snapshot.hasData || snapshot.data!.data() == null) {
@@ -61,7 +63,9 @@ class FollowingScreen extends StatelessWidget {
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return const ListTile(
-                      leading: CircularProgressIndicator(),
+                      leading: CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
                     );
                   }
 

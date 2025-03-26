@@ -27,7 +27,9 @@ class HomeScreen extends StatelessWidget {
             stream: provider.getPosts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ));
               } else if (snapshot.hasError) {
                 return Center(child: Text("Error loading posts", style: TextStyle(color: Colors.white)));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -105,28 +107,33 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             subtitle: Text(post.content, style: TextStyle(color: Colors.white70)),
-            trailing: IconButton(
-              icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: isLiked ? Colors.red : Colors.white),
-              onPressed: () {
-                if (auth.userModel?.uid != null) {
-                  provider.likePost(post.id, auth.userModel!.uid);
-                }
-              },
-            ),
+            trailing:  auth.userModel?.uid==post.userId?
+            IconButton(onPressed: (){
+              provider.deletePost(post.id);
+            }, icon: Icon(Icons.delete,size: 17.r),color: Colors.red,):
+            SizedBox()
           ),
           // Add Comment Button
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                onPressed: () => _showCommentDialog(context, auth, provider, post.id),
-                child: Text("Add Comment", style: TextStyle(color: Colors.blue)),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.repeat,color: Colors.white,size: 17.r),
               ),
-              auth.userModel?.uid==post.userId?
-              IconButton(onPressed: (){
-                provider.deletePost(post.id);
-              }, icon: Icon(Icons.delete),color: Colors.red,):
-              SizedBox()
+              IconButton(
+                onPressed: () => _showCommentDialog(context, auth, provider, post.id),
+                icon: Icon(Icons.comment_outlined,color: Colors.white,size: 17.r),
+              ),
+              IconButton(
+                icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: isLiked ? Colors.red : Colors.white,size: 17.r,),
+                onPressed: () {
+                  if (auth.userModel?.uid != null) {
+                    provider.likePost(post.id, auth.userModel!.uid);
+                  }
+                },
+              ),
+
             ],
           )
 
@@ -147,7 +154,9 @@ class HomeScreen extends StatelessWidget {
               stream: provider.getComments(postId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ));
                 } else if (snapshot.hasError) {
                   return Text("Error loading comments", style: TextStyle(color: Colors.white));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
