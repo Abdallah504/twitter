@@ -4,14 +4,14 @@ class MessageModel {
   final String senderId;
   final String recipientId;
   final String content;
-  final DateTime timestamp;
+  final DateTime? timestamp; // Make timestamp nullable
   final bool read;
 
   MessageModel({
     required this.senderId,
     required this.recipientId,
     required this.content,
-    required this.timestamp,
+    this.timestamp, // Now nullable
     required this.read,
   });
 
@@ -20,18 +20,10 @@ class MessageModel {
       senderId: map['senderId'] ?? '',
       recipientId: map['recipientId'] ?? '',
       content: map['content'] ?? '',
-      timestamp: (map['timestamp'] as Timestamp).toDate(),
+      timestamp: map['timestamp'] != null
+          ? (map['timestamp'] as Timestamp).toDate()
+          : null,
       read: map['read'] ?? false,
     );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'senderId': senderId,
-      'recipientId': recipientId,
-      'content': content,
-      'timestamp': timestamp,
-      'read': read,
-    };
   }
 }

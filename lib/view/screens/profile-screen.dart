@@ -411,35 +411,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
             subtitle: Text(post.content, style: TextStyle(color: Colors.white70)),
-            trailing: IconButton(
-              icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: isLiked ? Colors.red : Colors.white),
-              onPressed: () {
-                if (auth.userModel?.uid != null) {
-                  provider.likePost(post.id, auth.userModel!.uid);
-                }
-              },
-            ),
+              trailing:  auth.userModel?.uid==post.userId?
+              IconButton(onPressed: (){
+                provider.deletePost(post.id);
+              }, icon: Icon(Icons.delete,size: 17.r),color: Colors.red,):
+              SizedBox()
           ),
           // Add Comment Button
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
+
+              IconButton(
                 onPressed: () => _showCommentDialog(context, auth, provider, post.id),
-                child: Text("Add Comment", style: TextStyle(color: Colors.blue)),
+                icon: Icon(Icons.comment_outlined,color: Colors.white,size: 17.r),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.favorite_border,size: 9.sp,color: Colors.grey,),
-                  SizedBox(width: 2.w,),
-                  Text(post.likes.length.toString(),style: TextStyle(color:Colors.grey,fontSize: 10.sp),)
-                ],
+              Text(post.comments.length.toString(),style: TextStyle(color: Colors.white,fontSize: 11.sp),),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.repeat,color: Colors.white,size: 17.r),
               ),
-              auth.userModel!.uid == post.userId
-                  ? IconButton(onPressed: () {}, icon: Icon(Icons.delete), color: Colors.red)
-                  : SizedBox()
+              Text('0',style: TextStyle(color: Colors.white,fontSize: 11.sp),),
+              IconButton(
+                icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: isLiked ? Colors.red : Colors.white,size: 17.r,),
+                onPressed: () {
+                  if (auth.userModel?.uid != null) {
+                    provider.likePost(post.id, auth.userModel!.uid);
+                  }
+                },
+              ),
+              Text(post.likes.length.toString(),style: TextStyle(color: Colors.white,fontSize: 11.sp),)
+
             ],
           )
         ],

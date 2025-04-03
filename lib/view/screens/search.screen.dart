@@ -116,7 +116,27 @@ class _SearchScreenState extends State<SearchScreen> {
                                     height: 170.h,
                                     width: 250.w,
 
-                                    child: Image.network(provider.bbcModel!.articles![index].urlToImage.toString()),
+                                    child: Image.network(
+                                      provider.bbcModel!.articles![index].urlToImage.toString(),
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Image.asset('assets/news.jpg');
+                                      },
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return SizedBox(
+                                          width: 100, // Same dimensions as error state
+                                          height: 100,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress.expectedTotalBytes != null
+                                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      fit: BoxFit.cover, // Optional: adjust to your needs
+                                    ),
                                   ),
                                   Container(
                                     height: 40.h,
@@ -163,7 +183,27 @@ class _SearchScreenState extends State<SearchScreen> {
                               onTap: ()async{
                                 await launchUrl(Uri.parse(provider.newsModel!.articles![index].url.toString()));
                               },
-                              leading: Image.network(provider.newsModel!.articles![index].urlToImage.toString()),
+                              leading: Image.network(
+                                provider.newsModel!.articles![index].urlToImage.toString(),
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset('assets/news.jpg');
+                                },
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return SizedBox(
+                                    width: 100, // Same dimensions as error state
+                                    height: 100,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress.expectedTotalBytes != null
+                                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                fit: BoxFit.cover, // Optional: adjust to your needs
+                              ),
                               title: Text(provider.newsModel!.articles![index].title.toString(),style: TextStyle(color: Colors.white),),
                               //subtitle: Text(provider.newsModel!.articles![index].author.toString(),style: TextStyle(color: Colors.white54),),
                             )

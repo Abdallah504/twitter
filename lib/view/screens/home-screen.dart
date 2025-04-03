@@ -117,14 +117,17 @@ class HomeScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.repeat,color: Colors.white,size: 17.r),
-              ),
+
               IconButton(
                 onPressed: () => _showCommentDialog(context, auth, provider, post.id),
                 icon: Icon(Icons.comment_outlined,color: Colors.white,size: 17.r),
               ),
+              Text(post.comments.length.toString(),style: TextStyle(color: Colors.white,fontSize: 11.sp),),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.repeat,color: Colors.white,size: 17.r),
+              ),
+              Text('0',style: TextStyle(color: Colors.white,fontSize: 11.sp),),
               IconButton(
                 icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border, color: isLiked ? Colors.red : Colors.white,size: 17.r,),
                 onPressed: () {
@@ -133,6 +136,7 @@ class HomeScreen extends StatelessWidget {
                   }
                 },
               ),
+              Text(post.likes.length.toString(),style: TextStyle(color: Colors.white,fontSize: 11.sp),)
 
             ],
           )
